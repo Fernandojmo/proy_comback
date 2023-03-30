@@ -1,11 +1,7 @@
 const mongoose=require('mongoose');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
-    // id: {
-    //     type: Number,
-    //     required: true,
-    //     trim: true,
-    // },
     firstname: {
         type: String,
         required: true,
@@ -30,7 +26,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm],
+        match: [/^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,21}$/gm],
+    },
+    salt: {
+        type: String,
+        required: true,
     },
     isAdmin: {
         type: Boolean,
@@ -42,6 +42,30 @@ const userSchema = new mongoose.Schema({
         trim: true,
     },
 })
+ 
+userSchema.methods.hashPassword = function(password) {
+
+    // se crea la salt ramdon y encriptada para agregar a la contraseña encriptada
+    // se this. para hacer referencia a la variable del schema
+    this.salt = crypto.randomBytes(10).toString('hex');
+    
+    // encriptacion de la contraseña
+    // syntaxis = crypto.pbkdf2Sync(password, secret_key, iterations, key_length, digest_algorithm).toString('hex');
+    // password corresponde a la contraseña que nos llega por el body
+    // secret_key o salt corresponde a una variable que se genera aleatoriamente para encriptar la contraseña
+    // iterations corresponde a la cantidad de veces que se va a encriptar la contraseña
+    // key_length corresponde a la longitud de la contraseña encriptada
+    // digest_algorithm corresponde al algoritmo de encriptacion
+    // .toString('hex') convierte el resultado en hexadecimal
+    // se utiliza this. para hacer referencia a la variable del schema
+    this.password = crypto.pbkdf2Sync(password, this.salt, 5000, 8, 'sha-512').toString('hex');
+};
+
+userSchema.methods.validatePassword = function(password, salt, DBpassword) {
+    // se utiliza this. para hacer referencia a la variable del schema
+    const hash = crypto.pbkdf2Sync(password, salt, 5000, 8, 'sha-512').toString('hex');
+    return hash === DBpassword;
+};
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;
