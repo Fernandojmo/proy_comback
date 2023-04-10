@@ -45,7 +45,7 @@ try {
     await newUser.save();
     
     // devolvemos la respuesta con el status 201 y el json con el mensaje de usuario creado
-    res.status(201).json({ success: true, message:"usuario creado" , info:newUser });
+    res.status(201).json({ success: true, message:"usuario creado" , info:newUser, token: newUser.generateJWT()});
 } catch (error) {
     res.status(400).json({ success: false, error });
 }
@@ -125,7 +125,7 @@ const logIn = async (req, res) => {
         }
 
         // si la contraseña encriptada es igual a la contraseña encriptada del usuario, devolvemos un json con el mensaje de usuario logueado
-        res.json({ success: true, message: "usuario logueado", info: user });
+        res.json({ success: true, message: "usuario logueado", info: user, token: user.generateJWT()});
 
         
     // si hay un error, devolvemos un json con el error

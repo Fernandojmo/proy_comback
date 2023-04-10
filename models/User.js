@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     firstname: {
@@ -62,10 +63,20 @@ userSchema.methods.hashPassword = function(password) {
 };
 
 userSchema.methods.validatePassword = function(password, salt, DBpassword) {
-    // se utiliza this. para hacer referencia a la variable del schema
+    // se valida la contraseña
     const hash = crypto.pbkdf2Sync(password, salt, 5000, 8, 'sha-512').toString('hex');
     return hash === DBpassword;
 };
+
+userSchema.methods.generateJWT = function() {
+    const payload = {
+        id: this._id,
+        firstname: this.firstname,
+        email: this.email,
+    };
+    const token = jwt.sign(payload,process.env.SECRET, {expiresIn: '1h'});
+    return token;
+}
 
 const User = mongoose.model('user', userSchema);
 module.exports = User;
