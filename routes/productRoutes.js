@@ -1,12 +1,12 @@
 const express = require('express');
-const auth = require('../middleware/auth');
+// const auth = require('../middleware/auth');
 
-const { getProducts, createProduct, getProductById, deleteProduct, editProduct } = require('../controllers/product.controller');
+const { getProducts, createProduct, getProductById, deleteProduct, editProduct } = require('../controller/product.controller');
 
 const productRouter = express.Router()
 
 productRouter.route('/products')
-    .post(auth, createProduct)
+    .post(createProduct)
     .get(getProducts)
 
 productRouter.route('/products/:productId')

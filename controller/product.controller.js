@@ -33,21 +33,24 @@ const getProductById = async(req, res) => {
 const createProduct = async(req, res) => {
    
     try {
-        const user = await User.findById(req.auth.id)
-        if(!user.isAdmin){
-            throw new Error('No tienes acceso')
+        // const user = await User.findById(req.auth.id)
+        // if(!user.isAdmin){
+        //     throw new Error('No tienes acceso')
+        // }
+        const productSKU = await Product.findOne({ SKU: req.body.SKU });
+        if (productSKU) {
+            return res.status(400).json({ success: false, message: "El SKU ya esta registrado" });
         }
-
         //* Guardar informacion en mi base de datos
 
         const newProduct =  new Product(req.body);
         await newProduct.save();
 
 
-        res.json({success: true, message: "Producto Creado", info: newProduct})
+        res.status(201).json({success: true, message: "Producto Creado", info: newProduct})
             
     } catch (error) {
-        res.status(500).json({success: false, message: error.message})
+        res.status(400).json({success: false, message: error.message})
     }
 } 
 

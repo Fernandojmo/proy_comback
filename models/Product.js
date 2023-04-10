@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const cacSpecialSchema = new mongoose.Schema({
-    red: {
-        type: String
-    },
-    blue: {
-        type: String
-    }
-})
+// const cacSpecialSchema = new mongoose.Schema({
+//     red: {
+//         type: String
+//     },
+//     blue: {
+//         type: String
+//     }
+// })
 
 const productSchema = new mongoose.Schema({
     SKU: {
@@ -22,17 +22,17 @@ const productSchema = new mongoose.Schema({
         trim: true
     },
     description: {
-        typeProduct: {
-            type: String
-        },
-        material: {
-            type: String
-        },
-        weight: {
-            type: Number,
-            min: 0.1
-        },
-       color: [cacSpecialSchema]
+    //     typeProduct: {
+    //         type: String
+    //     },
+    //     material: {
+    //         type: String
+    //     },
+    //     weight: {
+    //         type: Number,
+    //         min: 0.1
+    //     },
+    //    color: [cacSpecialSchema]
     },
     price: {
         type: Number,
