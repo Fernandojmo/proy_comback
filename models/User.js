@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    favoriteProducts: {
+        type: mongoose.Types.ObjectId,
+        ref: "product"
+    }
 })
  
 userSchema.methods.hashPassword = function(password) {

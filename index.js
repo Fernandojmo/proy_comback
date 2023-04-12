@@ -15,6 +15,5 @@ app.use(cors());
 app.use(express.json());
 app.use(userRouter);
 app.use(productRouter);
-// app.use(productRouter);
 
 app.listen(process.env.PORT,()=>console.log(`Servidor conectado en puerto: ${process.env.PORT}`))

@@ -68,31 +68,25 @@ try {
 // editar un usuario
 const editUser = async (req, res) => {
     try {
-        // obtenemos el id del usuario que nos llega por la url
-        const { id } = req.params;
-        // obtenemos la informacion que nos llega por el body
-        const contain = req.body
-        
-        // buscamos el usuario por el id que nos llega por la url
-        const user = await User.findById(id);
+        const { id } = req.auth;
+        // console.log(id);
+        const contain = req.body;
+        // console.log(contain);
+        const emails = await User.find()
+        // console.log(emails);
+        emails.forEach(userEmail => {
+            if(userEmail.email === contain.email){
+                throw new Error('Email en uso!')
+            }
+        })
 
-        // si no existe el usuario devolvemos un error
-        if (!user) {
-            // devolvemos la respuesta con el status 404 y el json con el error de usuario no encontrado
-            return res.status(404).json({ success: false, message: "usuario no encontrado" });
-        }
 
-        // si existe el usuario, actualizamos la informacion con el metodo updateOne()
-        else {
-            // le pasamos el id del usuario y la informacion que queremos actualizar
-            // guardamos el usuario en la variable user
-            //
-            const userUpdate = await User.findByIdAndUpdate(id, contain, {new:true});
-            return res.status(200).json({ success: true, message: "usuario actualizado", info: userUpdate });
-        }
+        const updateUser = await User.findByIdAndUpdate(id, contain, {new: true});
+
+        res.json({success: true, msg: "usuario actualizado", updateUser})
 
     } catch (error) {
-        res.status(400).json({ success: false, error });
+        res.status(500).json({success: false, message: "Error al actualizar usuario", error: error.message})
     }
 }
 
@@ -135,5 +129,19 @@ const logIn = async (req, res) => {
     }
 }
 
+//verificar usuario
+const verifyUser = async (req, res) => {
+    try {
+        // se obtiene el id del usuario que nos llega por la url y se guarda en id
+        const { id } = req.auth;
+        console.log(id);
+        const user=await User.findById(id).populate('favoriteProducts').select('-password -salt');
+        
+        res.status(200).json({ success: true, message: `usuario verificado ${user.email}`, info: user });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
 // exportamos las funciones
-module.exports = { createUser, getUsers, editUser, logIn };
+
+module.exports = { createUser, getUsers, editUser, logIn, verifyUser };
