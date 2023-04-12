@@ -9,7 +9,6 @@ const { find } = require('../models/User');
 // crear un usuario
 const createUser = async (req, res) => {
 try {
-
     // validación de email
     // guarda en la variable userEmail el resultado de la busqueda de un usuario con el email que nos llega por el body
     const userEmail = await User.findOne({ email: req.body.email });
