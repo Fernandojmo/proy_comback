@@ -1,11 +1,11 @@
 //iniciamos express
 const express = require('express');
+
 //importamos el autenticador de usuarios
 const auth = require('../middlewares/auth');
+
 //importamos los controladores de productos
 const { getProducts, createProduct, getProductById, deleteProduct, editProduct } = require('../controller/product.controller');
-
-
 
 //iniciamos el router
 const productRouter = express.Router()

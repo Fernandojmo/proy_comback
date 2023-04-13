@@ -114,7 +114,7 @@ const logIn = async (req, res) => {
 
         // si la contraseña encriptada es diferente a la contraseña encriptada del usuario, devolvemos un json con el mensaje de email o contraseña incorrectos
         if (!validateHash) {
-            return res.status(200).json({ success: true, message: "Email o contraseña incorrectos", info: user });
+            return res.status(200).json({ success: false, message: "Email o contraseña incorrectos", info: user });
         }
 
         // si la contraseña encriptada es igual a la contraseña encriptada del usuario, devolvemos un json con el mensaje de usuario logueado
