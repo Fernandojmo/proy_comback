@@ -48,7 +48,15 @@ const productSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
-    }
+    },
+    detail:{
+        type: String,
+        required: true
+    },
+    cat: {
+        type: String,
+        required: true
+    },
 })
 
 const Product = mongoose.model("product", productSchema)
