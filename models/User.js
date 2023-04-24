@@ -63,12 +63,12 @@ userSchema.methods.hashPassword = function(password) {
     // digest_algorithm corresponde al algoritmo de encriptacion
     // .toString('hex') convierte el resultado en hexadecimal
     // se utiliza this. para hacer referencia a la variable del schema
-    this.password = crypto.pbkdf2Sync(password, this.salt, 5000, 8, 'SHA-512').toString('hex');
+    this.password = crypto.pbkdf2Sync(password, this.salt, 5000, 8, 'sha512').toString('hex');
 };
 
 userSchema.methods.validatePassword = function(password, salt, DBpassword) {
     // se valida la contraseña
-    const hash = crypto.pbkdf2Sync(password, salt, 5000, 8, 'SHA-512').toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 5000, 8, 'sha512').toString('hex');
     return hash === DBpassword;
 };
 
