@@ -2,6 +2,7 @@ const mongoose=require('mongoose');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 
+    // se crea el schema de usuario
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -48,6 +49,7 @@ const userSchema = new mongoose.Schema({
     }
 })
  
+    // se crea el metodo para encriptar la contraseña
 userSchema.methods.hashPassword = function(password) {
 
     // se crea la salt ramdon y encriptada para agregar a la contraseña encriptada
@@ -72,6 +74,7 @@ userSchema.methods.validatePassword = function(password, salt, DBpassword) {
     return hash === DBpassword;
 };
 
+    // se genera el token con el id, nombre y correo del usuario 
 userSchema.methods.generateJWT = function() {
     const payload = {
         id: this._id,
@@ -82,5 +85,6 @@ userSchema.methods.generateJWT = function() {
     return token;
 }
 
+    //se crea el modelo de usuario
 const User = mongoose.model('user', userSchema);
 module.exports = User;

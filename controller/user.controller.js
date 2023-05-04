@@ -68,17 +68,13 @@ try {
 const editUser = async (req, res) => {
     try {
         const { id } = req.auth;
-        // console.log(id);
         const contain = req.body;
-        // console.log(contain);
         const emails = await User.find()
-        // console.log(emails);
         emails.forEach(userEmail => {
             if(userEmail.email === contain.email){
                 throw new Error('Email en uso!')
             }
         })
-
 
         const updateUser = await User.findByIdAndUpdate(id, contain, {new: true});
 

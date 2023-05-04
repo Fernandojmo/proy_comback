@@ -32,7 +32,7 @@ const getProductById = async(req, res) => {
 }
 
 // Admin 
-
+// se crea un producto nuevo
 const createProduct = async(req, res) => {
    
     try {
@@ -57,14 +57,11 @@ const createProduct = async(req, res) => {
     }
 } 
 
+// editar un producto
 const editProduct = async(req, res) => {
 
     const {productId} = req.params;
     try {
-        // const user = await User.findById(req.auth.id)
-        // if(!user.isAdmin){
-        //     throw new Error('No tienes acceso')
-        // }
       const product = await Product.findByIdAndUpdate(productId, req.body, {new: true});
 
       res.json({success: true, msg: "Producto editado con exito", updateInfo: product})
@@ -73,14 +70,10 @@ const editProduct = async(req, res) => {
         res.status(500).json({success: false, message: error.message})
     }
 }
-
+// eliminar un producto
 const deleteProduct = async(req, res) => {
     const {productId} = req.params;
     try {
-        // const user = await User.findById(req.auth.id)
-        // if(!user.isAdmin){
-        //     throw new Error('No tienes acceso')
-        // }
       const product = await Product.findByIdAndDelete(productId);
 
       res.json({success: true, msg: "Producto eliminado con exito", deleteProduct: product})
